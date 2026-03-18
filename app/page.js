@@ -16,7 +16,7 @@ const packagePricing = {
     Cars: 220,
     'SUVs / Small Trucks': 250,
     'Large Trucks / Vans': 280,
-    includes: ['Bronze package', 'Wax & tire shine', 'Dash & trim detail'],
+    includes: ['Bronze package', 'Basic Hand Wax & tire shine', 'Dash & trim detail', 'Trunk & Truck Box Detail'],
   },
   Gold: {
     Cars: 270,
