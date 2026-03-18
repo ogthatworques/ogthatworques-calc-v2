@@ -10,19 +10,24 @@ const packagePricing = {
     Cars: 170,
     'SUVs / Small Trucks': 200,
     'Large Trucks / Vans': 230,
-    includes: ['Exterior wash', 'Interior vacuum', 'Windows & wipe down','Interior vinyl protection'],
+    includes: ['Exterior wash', 'Interior vacuum', 'Windows & wipe down'],
   },
   Silver: {
     Cars: 220,
     'SUVs / Small Trucks': 250,
     'Large Trucks / Vans': 280,
-    includes: ['Bronze package', 'Basic Hand Wax & tire shine', 'Dash & trim detail', 'Trunk & Truck Box Detail'],
+    includes: ['Bronze package', 'Hand Wax & tire shine', 'Dash & trim detail', 'Trunk & Truck Box Detailing'],
   },
   Gold: {
     Cars: 270,
     'SUVs / Small Trucks': 300,
     'Large Trucks / Vans': 330,
-    includes: ['Silver package', 'Shampoo seats & carpets', 'Engine bay cleaning', 'Decontamination Wash & Claybar'],
+    includes: [
+      'Silver package',
+      'Shampoo seats & carpets',
+      'Engine bay cleaning',
+      'Decontamination Wash & Claybar',
+    ],
   },
 };
 
@@ -51,24 +56,31 @@ export default function OGthatWorquesTapCalculator() {
   const [selectedPackage, setSelectedPackage] = useState('Bronze');
   const [vehicleSize, setVehicleSize] = useState('Cars');
   const [selectedAddOns, setSelectedAddOns] = useState([]);
-  const [paintCorrectionStages, setPaintCorrectionStages] = useState(0);
+  const [paintCorrectionStage, setPaintCorrectionStage] = useState(0);
 
   const basePrice = packagePricing[selectedPackage][vehicleSize];
 
-  const addOnTotal = useMemo(
-    () => selectedAddOns.reduce((sum, item) => sum + item.price, 0),
-    [selectedAddOns]
-  );
+  const addOnTotal = useMemo(() => {
+    return selectedAddOns.reduce((sum, item) => sum + item.price, 0);
+  }, [selectedAddOns]);
 
   const total = basePrice + addOnTotal + paintCorrectionStage;
 
   const toggleAddOn = (addOn) => {
     setSelectedAddOns((current) => {
       const exists = current.some((item) => item.name === addOn.name);
-      return exists
-        ? current.filter((item) => item.name !== addOn.name)
-        : [...current, addOn];
+      if (exists) {
+        return current.filter((item) => item.name !== addOn.name);
+      }
+      return [...current, addOn];
     });
+  };
+
+  const getPaintStageLabel = () => {
+    if (paintCorrectionStage === 100) return 'Stage 1';
+    if (paintCorrectionStage === 200) return 'Stage 2';
+    if (paintCorrectionStage === 300) return 'Stage 3';
+    return 'None';
   };
 
   return (
@@ -79,8 +91,15 @@ export default function OGthatWorquesTapCalculator() {
             <Sparkles className="h-4 w-4" />
             OGthatWorques Auto & Truck Detailing
           </div>
-          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Automotive Detailing Qoute Calculator</h1>
-          <p className="mt-3 text-base text-zinc-300 sm:text-lg">Choose a package, tap your vehicle size, and add extras to get your estimated starting price.</p>
+
+          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
+            Tap Style Pricing Calculator
+          </h1>
+
+          <p className="mt-3 text-base text-zinc-300 sm:text-lg">
+            Choose a package, tap your vehicle size, and add extras to get your estimated starting
+            price.
+          </p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
@@ -88,22 +107,35 @@ export default function OGthatWorquesTapCalculator() {
             <button
               key={pkg}
               onClick={() => setSelectedPackage(pkg)}
-              className={`rounded-3xl border bg-gradient-to-br p-[1px] text-left shadow-2xl transition duration-200 hover:scale-[1.01] ${packageStyles[pkg]} ${selectedPackage === pkg ? 'ring-2 ring-white/60' : ''}`}
+              className={`rounded-3xl border bg-gradient-to-br p-[1px] text-left shadow-2xl transition duration-200 hover:scale-[1.01] ${
+                packageStyles[pkg]
+              } ${selectedPackage === pkg ? 'ring-2 ring-white/60' : ''}`}
+              type="button"
             >
               <div className="h-full rounded-[calc(1.5rem-1px)] bg-zinc-950/90 p-6">
                 <div className="flex items-center justify-between">
                   <h2 className="text-3xl font-black">{pkg}</h2>
-                  {selectedPackage === pkg && <CheckCircle2 className="h-6 w-6 text-green-400" />}
+                  {selectedPackage === pkg && (
+                    <CheckCircle2 className="h-6 w-6 text-green-400" />
+                  )}
                 </div>
-                <p className="mt-3 text-sm uppercase tracking-[0.2em] text-zinc-400">Pricing starting at</p>
+
+                <p className="mt-3 text-sm uppercase tracking-[0.2em] text-zinc-400">
+                  Pricing starting at
+                </p>
+
                 <div className="mt-4 space-y-3">
                   {['Cars', 'SUVs / Small Trucks', 'Large Trucks / Vans'].map((size) => (
-                    <div key={size} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                    <div
+                      key={size}
+                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
+                    >
                       <span className="text-sm text-zinc-300">{size}</span>
                       <span className="text-2xl font-black">${data[size]}</span>
                     </div>
                   ))}
                 </div>
+
                 <div className="mt-5 space-y-2">
                   {data.includes.map((item) => (
                     <div key={item} className="flex items-center gap-2 text-sm text-zinc-300">
@@ -125,16 +157,25 @@ export default function OGthatWorquesTapCalculator() {
                 Build Your Quote
               </CardTitle>
             </CardHeader>
+
             <CardContent className="space-y-6">
               <div>
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">1. Select package</p>
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">
+                  1. Select package
+                </p>
+
                 <div className="grid gap-3 sm:grid-cols-3">
                   {Object.keys(packagePricing).map((pkg) => (
                     <Button
                       key={pkg}
                       onClick={() => setSelectedPackage(pkg)}
                       variant="outline"
-                      className={`h-14 rounded-2xl border-white/10 text-base font-bold ${selectedPackage === pkg ? 'bg-white text-black hover:bg-white' : 'bg-white/5 text-white hover:bg-white/10'}`}
+                      className={`h-14 rounded-2xl border-white/10 text-base font-bold ${
+                        selectedPackage === pkg
+                          ? 'bg-white text-black hover:bg-white'
+                          : 'bg-white/5 text-white hover:bg-white/10'
+                      }`}
+                      type="button"
                     >
                       {pkg}
                     </Button>
@@ -143,7 +184,10 @@ export default function OGthatWorquesTapCalculator() {
               </div>
 
               <div>
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">2. Tap your vehicle size</p>
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">
+                  2. Tap your vehicle size
+                </p>
+
                 <div className="grid gap-3 sm:grid-cols-3">
                   {[
                     { label: 'Cars', icon: Car },
@@ -153,26 +197,42 @@ export default function OGthatWorquesTapCalculator() {
                     <button
                       key={label}
                       onClick={() => setVehicleSize(label)}
-                      className={`rounded-2xl border p-4 text-left transition ${vehicleSize === label ? 'border-white bg-white text-black' : 'border-white/10 bg-white/5 text-white hover:bg-white/10'}`}
+                      className={`rounded-2xl border p-4 text-left transition ${
+                        vehicleSize === label
+                          ? 'border-white bg-white text-black'
+                          : 'border-white/10 bg-white/5 text-white hover:bg-white/10'
+                      }`}
+                      type="button"
                     >
                       <Icon className="mb-3 h-6 w-6" />
                       <div className="text-sm font-medium">{label}</div>
-                      <div className="mt-2 text-2xl font-black">${packagePricing[selectedPackage][label]}</div>
+                      <div className="mt-2 text-2xl font-black">
+                        ${packagePricing[selectedPackage][label]}
+                      </div>
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">3. Add extras</p>
-                <div className="grid gap-3 sm:grid-cols-2">
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">
+                  3. Add extras
+                </p>
+
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {addOns.map((addOn) => {
                     const active = selectedAddOns.some((item) => item.name === addOn.name);
+
                     return (
                       <button
                         key={addOn.name}
                         onClick={() => toggleAddOn(addOn)}
-                        className={`rounded-2xl border p-4 text-left transition ${active ? 'border-green-400 bg-green-400/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}
+                        className={`rounded-2xl border p-4 text-left transition ${
+                          active
+                            ? 'border-green-400 bg-green-400/10'
+                            : 'border-white/10 bg-white/5 hover:bg-white/10'
+                        }`}
+                        type="button"
                       >
                         <div className="text-base font-bold">{addOn.name}</div>
                         <div className="mt-2 text-2xl font-black">${addOn.price}</div>
@@ -183,15 +243,24 @@ export default function OGthatWorquesTapCalculator() {
               </div>
 
               <div>
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">4. Paint correction stage</p>
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">
+                  4. Paint correction stage
+                </p>
+
                 <div className="grid gap-3 sm:grid-cols-4">
                   {paintCorrectionStages.map((stage) => {
                     const active = paintCorrectionStage === stage.value;
+
                     return (
                       <button
                         key={stage.label}
                         onClick={() => setPaintCorrectionStage(stage.value)}
-                        className={`rounded-2xl border p-4 text-left transition ${active ? 'border-yellow-400 bg-yellow-400/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}
+                        className={`rounded-2xl border p-4 text-left transition ${
+                          active
+                            ? 'border-yellow-400 bg-yellow-400/10'
+                            : 'border-white/10 bg-white/5 hover:bg-white/10'
+                        }`}
+                        type="button"
                       >
                         <Wand2 className="mb-3 h-5 w-5" />
                         <div className="text-sm font-bold">{stage.label}</div>
@@ -208,12 +277,17 @@ export default function OGthatWorquesTapCalculator() {
             <CardHeader>
               <CardTitle className="text-2xl font-black">Estimated Starting Price</CardTitle>
             </CardHeader>
+
             <CardContent>
               <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <div className="text-sm uppercase tracking-[0.2em] text-zinc-400">Selected package</div>
+                <div className="text-sm uppercase tracking-[0.2em] text-zinc-400">
+                  Selected package
+                </div>
                 <div className="mt-1 text-2xl font-black">{selectedPackage}</div>
 
-                <div className="mt-5 text-sm uppercase tracking-[0.2em] text-zinc-400">Vehicle size</div>
+                <div className="mt-5 text-sm uppercase tracking-[0.2em] text-zinc-400">
+                  Vehicle size
+                </div>
                 <div className="mt-1 text-xl font-bold">{vehicleSize}</div>
 
                 <div className="mt-5 flex items-center justify-between text-lg">
@@ -222,7 +296,10 @@ export default function OGthatWorquesTapCalculator() {
                 </div>
 
                 <div className="mt-3">
-                  <div className="mb-2 text-sm uppercase tracking-[0.2em] text-zinc-400">Add-ons</div>
+                  <div className="mb-2 text-sm uppercase tracking-[0.2em] text-zinc-400">
+                    Add-ons
+                  </div>
+
                   {selectedAddOns.length === 0 && paintCorrectionStage === 0 ? (
                     <div className="text-zinc-400">No add-ons selected</div>
                   ) : (
@@ -233,9 +310,12 @@ export default function OGthatWorquesTapCalculator() {
                           <span className="font-bold">${item.price}</span>
                         </div>
                       ))}
+
                       {paintCorrectionStage > 0 && (
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-zinc-300">Paint Correction {paintCorrectionStage / 100 === 1 ? 'Stage 1' : paintCorrectionStage / 100 === 2 ? 'Stage 2' : 'Stage 3'}</span>
+                          <span className="text-zinc-300">
+                            Paint Correction {getPaintStageLabel()}
+                          </span>
                           <span className="font-bold">${paintCorrectionStage}</span>
                         </div>
                       )}
@@ -249,7 +329,10 @@ export default function OGthatWorquesTapCalculator() {
                 </div>
               </div>
 
-              <p className="mt-4 text-sm text-zinc-400">Starting prices may vary based on condition, soil level, pet hair, stains, and time required.</p>
+              <p className="mt-4 text-sm text-zinc-400">
+                Starting prices may vary based on condition, soil level, pet hair, stains, and time
+                required.
+              </p>
             </CardContent>
           </Card>
         </div>
