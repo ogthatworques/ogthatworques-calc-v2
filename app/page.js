@@ -22,7 +22,7 @@ const packagePricing = {
     Cars: 270,
     'SUVs / Small Trucks': 300,
     'Large Trucks / Vans': 330,
-    includes: ['Silver package', 'Shampoo seats & carpets', 'Engine bay cleaning', 'Clay & paint polish'],
+    includes: ['Silver package', 'Shampoo seats & carpets', 'Engine bay cleaning', 'Decontamination & Claybar'],
   },
 };
 
