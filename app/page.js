@@ -76,7 +76,7 @@ export default function OGthatWorquesTapCalculator() {
             <Sparkles className="h-4 w-4" />
             OGthatWorques Auto & Truck Detailing
           </div>
-          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Tap Style Pricing Calculator</h1>
+          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Automotive Detailing Qoute Calculator</h1>
           <p className="mt-3 text-base text-zinc-300 sm:text-lg">Choose a package, tap your vehicle size, and add extras to get your estimated starting price.</p>
         </div>
 
