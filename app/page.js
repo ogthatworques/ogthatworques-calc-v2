@@ -29,6 +29,9 @@ const packagePricing = {
 const addOns = [
   { name: 'Engine Detailing', price: 50 },
   { name: 'Ceramic Coating (1 Year)', price: 400 },
+  { name: 'Pet Hair', price: 35},
+  { name: 'Headlight Restoration', price: 50 },
+  [ name: 'Execessive Dirtyness Charge', price: 25],
 ];
 
 const paintCorrectionStages = [
