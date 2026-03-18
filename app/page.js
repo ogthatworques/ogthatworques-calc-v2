@@ -10,7 +10,7 @@ const packagePricing = {
     Cars: 170,
     'SUVs / Small Trucks': 200,
     'Large Trucks / Vans': 230,
-    includes: ['Exterior wash', 'Interior vacuum', 'Windows & wipe down'],
+    includes: ['Exterior wash', 'Interior vacuum', 'Windows & wipe down','Interior vinyl protection'],
   },
   Silver: {
     Cars: 220,
@@ -22,7 +22,7 @@ const packagePricing = {
     Cars: 270,
     'SUVs / Small Trucks': 300,
     'Large Trucks / Vans': 330,
-    includes: ['Silver package', 'Shampoo seats & carpets', 'Engine bay cleaning', 'Decontamination & Claybar'],
+    includes: ['Silver package', 'Shampoo seats & carpets', 'Engine bay cleaning', 'Decontamination Wash & Claybar'],
   },
 };
 
