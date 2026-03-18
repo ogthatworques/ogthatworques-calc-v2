@@ -68,15 +68,6 @@ export default function OGthatWorquesTapCalculator() {
     });
   };
 
-  const stageLabel =
-    paintCorrectionStage === 100
-      ? 'Stage 1'
-      : paintCorrectionStage === 200
-      ? 'Stage 2'
-      : paintCorrectionStage === 300
-      ? 'Stage 3'
-      : 'None';
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-zinc-950 via-zinc-900 to-black text-white">
       <div className="mx-auto max-w-6xl px-4 py-10">
@@ -85,12 +76,8 @@ export default function OGthatWorquesTapCalculator() {
             <Sparkles className="h-4 w-4" />
             OGthatWorques Auto & Truck Detailing
           </div>
-          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">
-            Tap Style Pricing Calculator
-          </h1>
-          <p className="mt-3 text-base text-zinc-300 sm:text-lg">
-            Choose a package, tap your vehicle size, and add extras to get your estimated starting price.
-          </p>
+          <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Tap Style Pricing Calculator</h1>
+          <p className="mt-3 text-base text-zinc-300 sm:text-lg">Choose a package, tap your vehicle size, and add extras to get your estimated starting price.</p>
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
@@ -105,15 +92,10 @@ export default function OGthatWorquesTapCalculator() {
                   <h2 className="text-3xl font-black">{pkg}</h2>
                   {selectedPackage === pkg && <CheckCircle2 className="h-6 w-6 text-green-400" />}
                 </div>
-                <p className="mt-3 text-sm uppercase tracking-[0.2em] text-zinc-400">
-                  Pricing starting at
-                </p>
+                <p className="mt-3 text-sm uppercase tracking-[0.2em] text-zinc-400">Pricing starting at</p>
                 <div className="mt-4 space-y-3">
                   {['Cars', 'SUVs / Small Trucks', 'Large Trucks / Vans'].map((size) => (
-                    <div
-                      key={size}
-                      className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3"
-                    >
+                    <div key={size} className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
                       <span className="text-sm text-zinc-300">{size}</span>
                       <span className="text-2xl font-black">${data[size]}</span>
                     </div>
@@ -142,9 +124,7 @@ export default function OGthatWorquesTapCalculator() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">
-                  1. Select package
-                </p>
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">1. Select package</p>
                 <div className="grid gap-3 sm:grid-cols-3">
                   {Object.keys(packagePricing).map((pkg) => (
                     <Button
@@ -160,9 +140,7 @@ export default function OGthatWorquesTapCalculator() {
               </div>
 
               <div>
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">
-                  2. Tap your vehicle size
-                </p>
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">2. Tap your vehicle size</p>
                 <div className="grid gap-3 sm:grid-cols-3">
                   {[
                     { label: 'Cars', icon: Car },
@@ -176,18 +154,14 @@ export default function OGthatWorquesTapCalculator() {
                     >
                       <Icon className="mb-3 h-6 w-6" />
                       <div className="text-sm font-medium">{label}</div>
-                      <div className="mt-2 text-2xl font-black">
-                        ${packagePricing[selectedPackage][label]}
-                      </div>
+                      <div className="mt-2 text-2xl font-black">${packagePricing[selectedPackage][label]}</div>
                     </button>
                   ))}
                 </div>
               </div>
 
               <div>
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">
-                  3. Add extras
-                </p>
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">3. Add extras</p>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {addOns.map((addOn) => {
                     const active = selectedAddOns.some((item) => item.name === addOn.name);
@@ -206,9 +180,7 @@ export default function OGthatWorquesTapCalculator() {
               </div>
 
               <div>
-                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">
-                  4. Paint correction stage
-                </p>
+                <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">4. Paint correction stage</p>
                 <div className="grid gap-3 sm:grid-cols-4">
                   {paintCorrectionStages.map((stage) => {
                     const active = paintCorrectionStage === stage.value;
@@ -260,7 +232,7 @@ export default function OGthatWorquesTapCalculator() {
                       ))}
                       {paintCorrectionStage > 0 && (
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-zinc-300">Paint Correction {stageLabel}</span>
+                          <span className="text-zinc-300">Paint Correction {paintCorrectionStage / 100 === 1 ? 'Stage 1' : paintCorrectionStage / 100 === 2 ? 'Stage 2' : 'Stage 3'}</span>
                           <span className="font-bold">${paintCorrectionStage}</span>
                         </div>
                       )}
@@ -274,9 +246,7 @@ export default function OGthatWorquesTapCalculator() {
                 </div>
               </div>
 
-              <p className="mt-4 text-sm text-zinc-400">
-                Starting prices may vary based on condition, soil level, pet hair, stains, and time required.
-              </p>
+              <p className="mt-4 text-sm text-zinc-400">Starting prices may vary based on condition, soil level, pet hair, stains, and time required.</p>
             </CardContent>
           </Card>
         </div>
